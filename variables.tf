@@ -17,6 +17,11 @@ variable "aws_region" {
   default = "us-west-2"
 }
 
+variable "aws_profile" {
+  default     = "administrator-service"
+  description = "AWS profile to use for Terraform operations"
+}
+
 variable "redshift_password" {
   description = "Master password for RedShift cluster."
 }
