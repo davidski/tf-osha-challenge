@@ -1,12 +1,13 @@
 data "aws_iam_policy_document" "ml_predictor" {
   statement {
     sid = "MakeMLpredictions"
+
     actions = [
       "machinelearning:Predict",
     ]
 
     resources = [
-      "arn:aws:machinelearning:::mlmodel/*"
+      "arn:aws:machinelearning:::mlmodel/*",
     ]
   }
 }
