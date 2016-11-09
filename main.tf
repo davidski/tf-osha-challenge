@@ -1,11 +1,10 @@
 provider "aws" {
-  region = "${var.aws_region}"
+  region  = "${var.aws_region}"
   profile = "${var.aws_profile}"
 
   assume_role {
     role_arn = "arn:aws:iam::754135023419:role/administrator-service"
   }
-
 }
 
 data "aws_availability_zones" "available" {}
@@ -13,7 +12,6 @@ data "aws_availability_zones" "available" {}
 data "aws_region" "current" {
   current = true
 }
-
 
 data "terraform_remote_state" "main" {
   backend = "s3"
@@ -27,11 +25,12 @@ data "terraform_remote_state" "main" {
 }
 
 module "osha_vpc" {
-  /*source     = "github.com/davidski/tf-vpc.git"*/
-  source  = "D:\\terraform\\tf-vpc"
-  cidr    = "${var.vpc_cidr}"
-  name    = "${var.vpc_name}"
-  project = "osha"
+  source = "github.com/davidski/tf-vpc.git?ref=v0.1.1"
+
+  /*source  = "D:\\terraform\\tf-vpc"*/
+  cidr         = "${var.vpc_cidr}"
+  name         = "${var.vpc_name}"
+  project      = "osha"
   logging_role = "${data.terraform_remote_state.main.vpc_cloudwatch_logger_role_arn}"
 }
 
@@ -159,6 +158,7 @@ resource "aws_redshift_cluster" "osha_redshift" {
   publicly_accessible          = true
   encrypted                    = true
   enable_logging               = true
+  enhanced_vpc_routing         = true
   bucket_name                  = "${data.terraform_remote_state.main.auditlogs}"
   s3_key_prefix                = "redshift/"
 
@@ -173,7 +173,7 @@ resource "aws_redshift_cluster" "osha_redshift" {
     "managed_by"  = "Terraform"
   }
 
-  iam_roles = ["${aws_iam_role.redshift_s3_reader.arn}" ]
+  iam_roles = ["${aws_iam_role.redshift_s3_reader.arn}"]
 }
 
 output "redshift_endpoint" {
@@ -181,7 +181,7 @@ output "redshift_endpoint" {
 }
 
 resource "aws_s3_bucket" "ml_bucket" {
-  bucket = "osha-ml"
+  bucket        = "osha-ml"
   force_destroy = true
 
   tags {
@@ -189,5 +189,4 @@ resource "aws_s3_bucket" "ml_bucket" {
     project    = "osha"
     managed_by = "Terraform"
   }
-
 }
