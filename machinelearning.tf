@@ -1,17 +1,3 @@
-data "aws_iam_policy_document" "ml_predictor" {
-  statement {
-    sid = "MakeMLpredictions"
-
-    actions = [
-      "machinelearning:Predict",
-    ]
-
-    resources = [
-      "arn:aws:machinelearning:::mlmodel/*",
-    ]
-  }
-}
-
 resource "aws_iam_role" "ml_predictor" {
   name = "ml_predictor"
 
@@ -37,8 +23,17 @@ resource "aws_iam_role" "ml_predictor" {
 EOF
 }
 
-resource "aws_iam_role_policy" "ml_predictor" {
-  name   = "ml_predictor"
-  role   = "${aws_iam_role.ml_predictor.id}"
-  policy = "${data.aws_iam_policy_document.ml_predictor.json}"
+resource "aws_iam_role_policy_attachment" "ml_predictor_manageendpoint" {
+  role       = "${aws_iam_role.ml_predictor.id}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningManageRealTimeEndpointOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "ml_predictor_make_predictions" {
+  role       = "${aws_iam_role.ml_predictor.id}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningRealTimePredictionOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "ml_predictor_describe_models" {
+  role       = "${aws_iam_role.ml_predictor.id}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningReadOnlyAccess"
 }
