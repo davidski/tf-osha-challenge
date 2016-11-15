@@ -2,7 +2,8 @@
 lock = {
   backend = "dynamodb"
   config {
-    state_file_id = "personal-infraststructure"
+    state_file_id = "osha-challenge"
+    region = "us-west-2"
   }
 }
 
