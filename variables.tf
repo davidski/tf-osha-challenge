@@ -25,3 +25,8 @@ variable "aws_profile" {
 variable "redshift_password" {
   description = "Master password for RedShift cluster."
 }
+
+variable "model_id" {
+  description = "AWS ML ModelId for predicitons"
+  default     = "ml-oKHtcVCiEit"
+}
