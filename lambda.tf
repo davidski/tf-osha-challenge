@@ -23,6 +23,11 @@ resource "aws_iam_role_policy_attachment" "lambda_worker" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningManageRealTimeEndpointOnlyAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_worker_logs" {
+  role       = "${aws_iam_role.lambda_worker.id}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
 resource "aws_lambda_function" "lambda_worker" {
   provider         = "aws.west"
   filename         = "osha_lambda_worker.zip"
