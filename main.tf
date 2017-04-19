@@ -118,6 +118,7 @@ resource "aws_security_group" "redshift_from_home" {
   }
 }
 
+/*
 resource "aws_security_group_rule" "allow_from_home" {
   type              = "ingress"
   from_port         = "${aws_redshift_cluster.osha_redshift.port}"
@@ -126,6 +127,7 @@ resource "aws_security_group_rule" "allow_from_home" {
   cidr_blocks       = ["${var.home_ip}/32"]
   security_group_id = "${aws_security_group.redshift_from_home.id}"
 }
+*/
 
 resource "aws_security_group" "all_outbound" {
   name_prefix = "all_outbound_"
@@ -156,6 +158,7 @@ resource "aws_redshift_parameter_group" "osha" {
   }
 }
 
+/*
 resource "aws_redshift_cluster" "osha_redshift" {
   cluster_identifier           = "tf-redshift-cluster"
   cluster_parameter_group_name = "${aws_redshift_parameter_group.osha.id}"
@@ -189,10 +192,18 @@ resource "aws_redshift_cluster" "osha_redshift" {
 output "redshift_endpoint" {
   value = "${aws_redshift_cluster.osha_redshift.endpoint}"
 }
+*/
 
 resource "aws_s3_bucket" "ml_bucket" {
   bucket        = "osha-ml"
   force_destroy = true
+
+  /*
+  logging {
+    target_bucket = "${data.terraform_remote_state.main.auditlogs}"
+    target_prefix = "s3logs/osha-ml/"
+  }
+*/
 
   tags {
     Name       = "Staging location for AWS ML"
