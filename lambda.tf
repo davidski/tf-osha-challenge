@@ -31,7 +31,7 @@ resource "aws_iam_role_policy_attachment" "lambda_worker_logs" {
 resource "aws_lambda_function" "lambda_worker" {
   provider      = "aws.west"
   s3_bucket     = "artifacts-severski"
-  s3_key        = "lambdas/osha-lambda-worker.zip"
+  s3_key        = "lambdas/realtime-endpoint-shutdown.zip"
   function_name = "osha_lambda_worker"
   description   = "Shuts down realtime prediction endpoint in response to SNS delivered Cloudwatch Alarm"
   role          = "${aws_iam_role.lambda_worker.arn}"
