@@ -17,6 +17,10 @@ variable "aws_region" {
   default = "us-west-2"
 }
 
+variable "project" {
+  default = "osha"
+}
+
 variable "aws_profile" {
   default     = "administrator-service"
   description = "AWS profile to use for Terraform operations"

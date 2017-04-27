@@ -37,6 +37,11 @@ resource "aws_lambda_function" "lambda_worker" {
   role          = "${aws_iam_role.lambda_worker.arn}"
   handler       = "main.lambda_handler"
   runtime       = "python2.7"
+
+  tags {
+    project    = "${var.project}"
+    managed_by = "Terraform"
+  }
 }
 
 resource "aws_lambda_permission" "with_sns" {

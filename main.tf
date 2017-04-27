@@ -40,7 +40,7 @@ module "osha_vpc" {
   /*source  = "D:\\terraform\\tf-vpc"*/
   cidr         = "${var.vpc_cidr}"
   name         = "${var.vpc_name}"
-  project      = "osha"
+  project      = "${var.project}"
   logging_role = "${data.terraform_remote_state.main.vpc_cloudwatch_logger_role_arn}"
 }
 
@@ -113,7 +113,7 @@ resource "aws_security_group" "redshift_from_home" {
   tags {
     Name        = "redshift_from_home"
     description = "Allow inbound traffic from home to RedShift"
-    project     = "osha"
+    project     = "${var.project}"
     managed_by  = "Terraform"
   }
 }
@@ -143,7 +143,7 @@ resource "aws_security_group" "all_outbound" {
   tags {
     Name        = "all_outbound"
     description = "Allow outbound traffic to the Internet"
-    project     = "osha"
+    project     = "${var.project}"
     managed_by  = "Terraform"
   }
 }
@@ -181,7 +181,7 @@ resource "aws_redshift_cluster" "osha_redshift" {
   ]
 
   tags = {
-    "project"     = "osha"
+    project      = "${var.project}"
     "description" = "primary RedShift cluster"
     "managed_by"  = "Terraform"
   }
@@ -207,7 +207,7 @@ resource "aws_s3_bucket" "ml_bucket" {
 
   tags {
     Name       = "Staging location for AWS ML"
-    project    = "osha"
+    project    = "${var.project}"
     managed_by = "Terraform"
   }
 }
