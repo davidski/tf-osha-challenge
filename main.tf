@@ -19,9 +19,7 @@ provider "aws" {
 
 data "aws_availability_zones" "available" {}
 
-data "aws_region" "current" {
-  current = true
-}
+data "aws_region" "current" {}
 
 data "terraform_remote_state" "main" {
   backend = "s3"
