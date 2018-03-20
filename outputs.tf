@@ -7,5 +7,5 @@ output "redshift_user" {
 }
 
 output "cognito_identity_pool" {
-  value = "${aws_cognito_identity_pool.main}"
+  value = "${aws_cognito_identity_pool.main.id}"
 }
