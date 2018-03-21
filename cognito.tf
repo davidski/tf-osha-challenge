@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "authenticated_policy" {
     ]
 
     effect    = "Allow"
-    resources = "*"
+    resources = ["*"]
   }
 }
 
@@ -106,7 +106,7 @@ data "aws_iam_policy_document" "unauthenticated_trust" {
       values   = ["unauthenticated"]
     }
 
-    resources = "*"
+    resources = ["*"]
   }
 }
 
