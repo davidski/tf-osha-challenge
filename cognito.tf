@@ -15,8 +15,8 @@ resource "aws_cognito_identity_pool_roles_attachment" "main" {
   identity_pool_id = "${aws_cognito_identity_pool.main.id}"
 
   roles {
-    "authenticated"   = "arn:aws:iam::754135023419:role/Cognito_OSHAMLPredictAuth_Role"
-    "unauthenticated" = "arn:aws:iam::754135023419:role/Cognito_OSHAMLPredictUnauth_Role"
+    "authenticated"   = "${aws_iam_role.authenticated.arn}"
+    "unauthenticated" = "${aws_iam_role.unauthenticated.arn}"
   }
 }
 
@@ -24,11 +24,6 @@ resource "aws_iam_role" "unauthenticated" {
   name_prefix        = "OSHA_ML_Unauthenticated_Cognito"
   description        = "OSHA ML Cognito Unauthenticated Users"
   assume_role_policy = "${data.aws_iam_policy_document.unauthenticated_trust.json}"
-}
-
-resource "aws_iam_role_policy_attachment" "oshaml_cognito" {
-  role       = "${aws_iam_role.unauthenticated.name}"
-  policy_arn = "${aws_iam_policy.unauthenticated_policy.arn}"
 }
 
 resource "aws_iam_role_policy_attachment" "oshaml_ml_readonly" {
