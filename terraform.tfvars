@@ -6,10 +6,11 @@ terragrunt = {
   remote_state = {
     backend = "s3"
     config {
-      encrypt = "true"
+      encrypt = true
       bucket = "infrastructure-severski"
       key = "terraform/osha-challenge.tfstate"
       region = "us-west-2"
     }
   }
 }
+
