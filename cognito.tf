@@ -26,9 +26,19 @@ resource "aws_iam_role" "unauthenticated" {
   assume_role_policy = "${data.aws_iam_policy_document.unauthenticated_trust.json}"
 }
 
-resource "aws_iam_role_policy_attachment" "oshaml_unauthenticated_attachment" {
+resource "aws_iam_role_policy_attachment" "oshaml_ml_readonly" {
   role       = "${aws_iam_role.unauthenticated.name}"
-  policy_arn = "${aws_iam_policy.unauthenticated_policy.arn}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningReadOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "oshaml_ml_realtimepredicitons" {
+  role       = "${aws_iam_role.unauthenticated.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningRealTimePredictionOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "oshaml_ml_managerealtimeendpoints" {
+  role       = "${aws_iam_role.unauthenticated.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningManageRealTimeEndpointOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "oshaml_authenticated_attachment" {
@@ -52,7 +62,7 @@ resource "aws_iam_policy" "unauthenticated_policy" {
 resource "aws_iam_policy" "authenticated_policy" {
   name_prefix = "OSHA_ML_Authenticated"
   path        = "/"
-  description = "OSHA ML Authenticated Users Access Permissions"
+  description = "Permit OSHA ML web app to do ML predicitions via unauthenticated Cogntio calls"
   policy      = "${data.aws_iam_policy_document.authenticated_policy.json}"
 }
 
@@ -126,7 +136,7 @@ data "aws_iam_policy_document" "authenticated_trust" {
     }
 
     condition {
-      test     = "StringLike"
+      test     = "ForAnyValue:StringLike"
       variable = "cognito-identity.amazonaws.com:amr"
       values   = ["unauthenticated"]
     }
