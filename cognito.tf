@@ -11,6 +11,7 @@ resource "aws_cognito_identity_pool" "main" {
 }
 
 resource "aws_cognito_identity_pool_roles_attachment" "main" {
+  provider         = "aws.west"
   identity_pool_id = "${aws_cognito_identity_pool.main.id}"
 
   roles {
