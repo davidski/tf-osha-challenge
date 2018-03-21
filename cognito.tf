@@ -79,7 +79,8 @@ data "aws_iam_policy_document" "authenticated_policy" {
       "cognito-identity:*",
     ]
 
-    effect = "Allow"
+    effect    = "Allow"
+    resources = "*"
   }
 }
 
@@ -104,6 +105,8 @@ data "aws_iam_policy_document" "unauthenticated_trust" {
       variable = "cognito-identity.amazonaws.com:amr"
       values   = ["unauthenticated"]
     }
+
+    resources = "*"
   }
 }
 
