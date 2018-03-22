@@ -38,6 +38,12 @@ resource "aws_lambda_function" "lambda_worker" {
   handler       = "main.lambda_handler"
   runtime       = "python2.7"
 
+  environment {
+    variables = {
+      MLModelId = "${var.model_id}"
+    }
+  }
+
   tags {
     project    = "${var.project}"
     managed_by = "Terraform"
