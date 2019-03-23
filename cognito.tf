@@ -8,6 +8,7 @@ resource "aws_cognito_identity_pool" "main" {
   provider                         = "aws.west"
   identity_pool_name               = "OSHA ML Predict"
   allow_unauthenticated_identities = true
+  version = "~> 1.54"
 }
 
 resource "aws_cognito_identity_pool_roles_attachment" "main" {
