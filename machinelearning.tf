@@ -24,17 +24,17 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "ml_predictor_manageendpoint" {
-  role       = "${aws_iam_role.ml_predictor.id}"
+  role       = aws_iam_role.ml_predictor.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningManageRealTimeEndpointOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "ml_predictor_make_predictions" {
-  role       = "${aws_iam_role.ml_predictor.id}"
+  role       = aws_iam_role.ml_predictor.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningRealTimePredictionOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "ml_predictor_describe_models" {
-  role       = "${aws_iam_role.ml_predictor.id}"
+  role       = aws_iam_role.ml_predictor.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningReadOnlyAccess"
 }
 
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "default" {
   namespace           = "AWS/ML"
 
   dimensions = {
-    MLModelId   = "${var.model_id}"
+    MLModelId   = var.model_id
     RequestMode = "RealTimePredictions"
   }
 
