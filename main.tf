@@ -35,9 +35,9 @@ data "terraform_remote_state" "main" {
 }
 
 module "osha_vpc" {
-  source = "git@github.com:davidski/tf-vpc.git?ref=v0.1.2"
-
+  source = "git@github.com:davidski/tf-vpc.git?ref=v0.1.3"
   /*source  = "D:\\terraform\\tf-vpc"*/
+
   cidr         = var.vpc_cidr
   name         = var.vpc_name
   project      = var.project
