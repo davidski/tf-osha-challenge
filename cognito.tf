@@ -5,17 +5,16 @@
 */
 
 resource "aws_cognito_identity_pool" "main" {
-  provider                         = "aws.west"
+  provider                         = aws.west
   identity_pool_name               = "OSHA ML Predict"
   allow_unauthenticated_identities = true
-  version                          = "~> 2.7"
 }
 
 resource "aws_cognito_identity_pool_roles_attachment" "main" {
-  provider         = "aws.west"
+  provider         = aws.west
   identity_pool_id = aws_cognito_identity_pool.main.id
 
-  roles {
+  roles = {
     authenticated   = aws_iam_role.authenticated.arn
     unauthenticated = aws_iam_role.unauthenticated.arn
   }
@@ -28,7 +27,7 @@ resource "aws_iam_role" "unauthenticated" {
 }
 
 resource "aws_iam_role_policy_attachment" "oshaml_ml_readonly" {
-  role       = iam_role.unauthenticated.name
+  role       = aws_iam_role.unauthenticated.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonMachineLearningReadOnlyAccess"
 }
 

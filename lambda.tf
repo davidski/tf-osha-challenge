@@ -29,7 +29,7 @@ resource "aws_iam_role_policy_attachment" "lambda_worker_logs" {
 }
 
 resource "aws_lambda_function" "lambda_worker" {
-  provider      = "aws.west"
+  provider      = aws.west
   s3_bucket     = "artifacts-severski"
   s3_key        = "lambdas/realtime-endpoint-shutdown.zip"
   function_name = "osha_lambda_worker"
@@ -44,14 +44,14 @@ resource "aws_lambda_function" "lambda_worker" {
     }
   }
 
-  tags {
+  tags = {
     project    = var.project
     managed_by = "Terraform"
   }
 }
 
 resource "aws_lambda_permission" "with_sns" {
-  provider      = "aws.west"
+  provider      = aws.west
   statement_id  = "AllowExecutionFromSNS"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_worker.arn

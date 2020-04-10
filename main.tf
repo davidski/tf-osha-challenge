@@ -1,7 +1,6 @@
 provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
-  version = "~> 2.7"
 
   assume_role {
     role_arn = "arn:aws:iam::754135023419:role/administrator-service"
@@ -12,7 +11,6 @@ provider "aws" {
   alias   = "west"
   region  = "us-west-2"
   profile = var.aws_profile
-  version = "~> 1.54"
 
   assume_role {
     role_arn = "arn:aws:iam::754135023419:role/administrator-service"
@@ -26,7 +24,7 @@ data "aws_region" "current" {}
 data "terraform_remote_state" "main" {
   backend = "s3"
 
-  config {
+  config = {
     bucket  = "infrastructure-severski"
     key     = "terraform/infrastructure.tfstate"
     region  = "us-west-2"
@@ -41,11 +39,11 @@ module "osha_vpc" {
   cidr         = var.vpc_cidr
   name         = var.vpc_name
   project      = var.project
-  logging_role = data.terraform_remote_state.main.vpc_cloudwatch_logger_role_arn
+  logging_role = data.terraform_remote_state.main.outputs.vpc_cloudwatch_logger_role_arn
 }
 
 module "osha_subnet" {
-  source            = "git@github.com:davidski/tf-public_subnet.git?ref=v0.1.1"
+  source            = "git@github.com:davidski/tf-public_subnet.git?ref=v0.1.4"
   vpc_id            = module.osha_vpc.vpc_id
   availability_zone = data.aws_availability_zones.available.names[0]
   subnet_cidr       = cidrsubnet(var.vpc_cidr, 8, 1)
@@ -110,7 +108,7 @@ resource "aws_security_group" "redshift_from_home" {
   name_prefix = "redshift_from_home"
   vpc_id      = module.osha_vpc.vpc_id
 
-  tags {
+  tags = {
     Name        = "redshift_from_home"
     description = "Allow inbound traffic from home to RedShift"
     project     = var.project
@@ -140,7 +138,7 @@ resource "aws_security_group" "all_outbound" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name        = "all_outbound"
     description = "Allow outbound traffic to the Internet"
     project     = var.project
@@ -205,7 +203,7 @@ resource "aws_s3_bucket" "ml_bucket" {
   }
 */
 
-  tags {
+  tags = {
     Name       = "Staging location for AWS ML"
     project    = var.project
     managed_by = "Terraform"

@@ -1,5 +1,5 @@
 output "redshift_password" {
-  value = var.redshift_passwor
+  value = var.redshift_password
 }
 
 output "redshift_user" {

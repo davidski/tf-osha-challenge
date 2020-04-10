@@ -1,26 +1,31 @@
+data "aws_iam_policy_document" "ml_predictor_trust" {
+  statement {
+    sid     = "1"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = ["cognito-identity.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "cognito-identity.amazonaws.com:aud"
+      values   = [aws_cognito_identity_pool.main.id]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "cognito-identity.amazonaws.com:amr"
+      values   = ["unauthenticated"]
+    }
+  }
+}
+
 resource "aws_iam_role" "ml_predictor" {
   name = "ml_predictor"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Principal": {
-        "Federated": "cognito-identity.amazonaws.com"
-      },
-      "Condition": {
-        "ForAnyValue:StringLike": {
-          "cognito-identity.amazonaws.com:amr": "unauthenticated"
-        }
-      }
-    }
-  ]
-}
-EOF
+  assume_role_policy = data.aws_iam_policy_document.ml_predictor_trust.json
 }
 
 resource "aws_iam_role_policy_attachment" "ml_predictor_manageendpoint" {
