@@ -1,5 +1,7 @@
 # OSHA-Challenge Terraform-based Infrastruscture
 
+> *DEPRECATED* This component has been merged into my primary mono-repo.
+
 Sets up a RedShift/ML environment for testing with the OSHA data challenge.
 
 The AWS environment includes:
