@@ -59,5 +59,5 @@ resource "aws_cloudwatch_metric_alarm" "default" {
   statistic         = "Maximum"
   threshold         = "0"
   alarm_description = "Monitors OSHA ML realtime prediction rates"
-  alarm_actions     = ["${aws_sns_topic.default.arn}"]
+  alarm_actions     = [aws_sns_topic.default.arn]
 }

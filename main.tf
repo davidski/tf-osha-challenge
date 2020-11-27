@@ -17,6 +17,10 @@ provider "aws" {
   }
 }
 
+terraform {
+  backend "s3" {}
+}
+
 data "aws_availability_zones" "available" {}
 
 data "aws_region" "current" {}
